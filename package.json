@@ -1,6 +1,6 @@
 {
   "name": "github-actions-utils",
-  "description": "",
+  "description": "A set of utility functions for GitHub actions.",
   "version": "1.0.0",
   "main": "src/index.js",
   "author": "Ammar Lakis <ammar.lakis@gmail.com>",
