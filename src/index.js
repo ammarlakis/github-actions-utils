@@ -1,65 +1,39 @@
-const core = require('@actions/core');
-
 /**
  * 
  * @param {string} inputName The name of the input to fetch.
- * @returns {boolean} Parsed boolean if 'true'/'false', otherwise null.
+ * @param {type} types The type to test the input against.
+ * @returns {any} Parsed value it passes the types list, otherwise null.
  */
-function parseBooleanInput(inputName) {
-  const inputString = core.getInput(inputName);
-  if (inputString === 'true') return true;
-  if (inputString === 'false') return false;
-  core.setFailed(`Failed to parse Boolean input for ${inputName}`)
+function tryParse(inputName, ...types) {
+  for (const type of types) {
+      switch (type.toLowerCase()) {
+          case 'number':
+              const number = parseFloat(input);
+              if (!isNaN(number)) return number;
+              break;
+          case 'boolean':
+              const lowerInput = input.toLowerCase();
+              if (lowerInput === 'true') return true;
+              if (lowerInput === 'false') return false;
+              break;
+          case 'date':
+              const date = new Date(input);
+              if (!isNaN(date.getTime())) return date;
+              break;
+          case 'json':
+              try {
+                  return JSON.parse(input);
+              } catch {
+                  // Invalid JSON
+              }
+              break;
+          default:
+              console.warn(`Unsupported type: ${type}`);
+      }
+  }
   return null;
 }
 
-/**
- * 
- * @param {string} inputName The name of the input to fetch.
- * @returns {boolean | string} Parsed boolean if 'true'/'false', otherwise the input string.
- */
-function parseBooleanOrStringInput(inputName) {
-  const inputString = core.getInput(inputName);
-  if (inputString === 'true') return true;
-  if (inputString === 'false') return false;
-  return inputString;
-}
-
-/**
- * 
- * @param {string} inputName The name of the input to fetch.
- * @returns {object} Parsed object if the input was valid, otherwise `null`.
- */
-function parseJsonInput(inputName) {
-  try {
-    const inputString = core.getInput(inputName);
-    return inputString ? JSON.parse(inputString) : {};
-  } catch (error) {
-    core.setFailed(`Failed to parse JSON input for ${inputName}: ${error.message}`);
-    return null;
-  }
-}
-
-/**
- * 
- * @param {string} inputName The name of the input to fetch.
- * @returns {boolean | object} Parsed boolean if 'true'/'false', if not then parsed object if the input was valid, otherwise `null`.
- */
-function parseBooleanOrJsonInput(inputName) {
-  try {
-    const inputString = core.getInput(inputName);
-    if (inputString === 'true') return true;
-    if (inputString === 'false') return false;
-    return inputString ? JSON.parse(inputString) : {};
-  } catch (error) {
-    core.setFailed(`Failed to parse JSON input for ${inputName}: ${error.message}`);
-    return {};
-  }
-}
-
 module.exports = {
-  parseBooleanInput,
-  parseBooleanOrStringInput,
-  parseJsonInput,
-  parseBooleanOrJsonInput
+  tryParse
 };
