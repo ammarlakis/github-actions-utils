@@ -1,5 +1,5 @@
 {
-  "name": "github-actions-utils",
+  "name": "@gh-actions/github-actions-utils",
   "description": "A set of utility functions for GitHub actions.",
   "version": "1.0.0",
   "main": "src/index.js",
