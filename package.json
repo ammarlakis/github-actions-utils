@@ -1,0 +1,10 @@
+{
+  "name": "github-actions-utils",
+  "description": "",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "Ammar Lakis <ammar.lakis@gmail.com>",
+  "dependencies": {
+    "@actions/core": "^1.9.0"
+  }
+}
