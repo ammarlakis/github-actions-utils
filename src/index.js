@@ -28,7 +28,6 @@ function parseInput(inputName, ...types) {
         try {
           return [JSON.parse(input), _type];
         } catch {
-          return [null, null]
         }
         break;
       case 'string':
