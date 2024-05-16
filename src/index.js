@@ -19,7 +19,7 @@ function Input(type, value) {
 /**
  *
  * @param {string} inputName The name of the input to fetch.
- * @param {...type} types The type to test the input against.
+ * @param {...string} types The type to test the input against.
  * @returns {Input} The Input object.
  */
 function parseInput(inputName, ...types) {
@@ -29,24 +29,24 @@ function parseInput(inputName, ...types) {
     switch (_type) {
       case "number":
         const number = parseFloat(input);
-        if (!isNaN(number)) Input(_type, number);
+        if (!isNaN(number)) return Input(_type, number);
         break;
       case "boolean":
         const lowerInput = input.toLowerCase();
-        if (lowerInput === "true") Input(_type, true);
-        if (lowerInput === "false") Input(_type, false);
+        if (lowerInput === "true") return Input(_type, true);
+        if (lowerInput === "false") return Input(_type, false);
         break;
       case "date":
         const date = new Date(input);
-        if (!isNaN(date.getTime())) Input(_type, date);
+        if (!isNaN(date.getTime())) return Input(_type, date);
         break;
       case "json":
         try {
-          Input(_type, JSON.parse(input));
+          return Input(_type, JSON.parse(input));
         } catch {}
         break;
       case "string":
-        Input(_type, input);
+        return Input(_type, input);
         break;
       default:
         core.warning(`Unsupported type: ${type}`);
