@@ -52,7 +52,7 @@ function parseInput(inputName, ...types) {
         core.warning(`Unsupported type: ${type}`);
     }
   }
-  null;
+  return null;
 }
 
 module.exports = {
