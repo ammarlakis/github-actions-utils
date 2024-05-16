@@ -1,45 +1,60 @@
-const core = require('@actions/core');
+const core = require("@actions/core");
 
 /**
- * 
+ * @typedef {Object} Input
+ * @property {*} type The type of the input.
+ * @property {*} value The parsed value of the input.
+ */
+
+/**
+ *
+ * @param {*} type The type of the input.
+ * @param {*} value The parsed value of the input.
+ * @returns {Input} The created object.
+ */
+function Input(type, value) {
+  return { type, value };
+}
+
+/**
+ *
  * @param {string} inputName The name of the input to fetch.
- * @param {type} types The type to test the input against.
- * @returns {any} An array of two values, the input value parsed and the type it matches, otherwise null for both.
+ * @param {...type} types The type to test the input against.
+ * @returns {Input} The Input object.
  */
 function parseInput(inputName, ...types) {
   const input = core.getInput(inputName);
   for (const type of types) {
-    const _type = type.toLowerCase()
+    const _type = type.toLowerCase();
     switch (_type) {
-      case 'number':
+      case "number":
         const number = parseFloat(input);
-        if (!isNaN(number)) return [number, _type];
+        if (!isNaN(number)) Input(_type, number);
         break;
-      case 'boolean':
+      case "boolean":
         const lowerInput = input.toLowerCase();
-        if (lowerInput === 'true') return [true, _type];
-        if (lowerInput === 'false') return [false, _type];
+        if (lowerInput === "true") Input(_type, true);
+        if (lowerInput === "false") Input(_type, false);
         break;
-      case 'date':
+      case "date":
         const date = new Date(input);
-        if (!isNaN(date.getTime())) return [date, _type];
+        if (!isNaN(date.getTime())) Input(_type, date);
         break;
-      case 'json':
+      case "json":
         try {
-          return [JSON.parse(input), _type];
-        } catch {
-        }
+          Input(_type, JSON.parse(input));
+        } catch {}
         break;
-      case 'string':
-          return [input, _type];
+      case "string":
+        Input(_type, input);
         break;
       default:
         core.warning(`Unsupported type: ${type}`);
     }
   }
-  return [null, null];
+  null;
 }
 
 module.exports = {
-  parseInput
+  parseInput,
 };
