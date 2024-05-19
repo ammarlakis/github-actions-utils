@@ -27,9 +27,13 @@ function parseInput(inputName, ...types) {
   for (const type of types) {
     const _type = type.toLowerCase();
     switch (_type) {
-      case "number":
-        const number = parseFloat(input);
-        if (!isNaN(number)) return Input(_type, number);
+      case "integer":
+        const intNumber = parseInt(input);
+        if (!isNaN(intNumber)) return Input(_type, intNumber);
+        break;
+      case "float":
+        const floatNumber = parseFloat(input);
+        if (!isNaN(floatNumber)) return Input(_type, floatNumber);
         break;
       case "boolean":
         const lowerInput = input.toLowerCase();
