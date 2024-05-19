@@ -24,38 +24,44 @@ function Input(type, value) {
  */
 function parseInput(inputName, ...types) {
   const input = core.getInput(inputName);
-  for (const type of types) {
-    const _type = type.toLowerCase();
-    switch (_type) {
-      case "integer":
-        const intNumber = parseInt(input);
-        if (!isNaN(intNumber)) return Input(_type, intNumber);
-        break;
-      case "float":
-        const floatNumber = parseFloat(input);
-        if (!isNaN(floatNumber)) return Input(_type, floatNumber);
-        break;
-      case "boolean":
-        const lowerInput = input.toLowerCase();
-        if (lowerInput === "true") return Input(_type, true);
-        if (lowerInput === "false") return Input(_type, false);
-        break;
-      case "date":
-        const date = new Date(input);
-        if (!isNaN(date.getTime())) return Input(_type, date);
-        break;
-      case "json":
-        try {
-          return Input(_type, JSON.parse(input));
-        } catch {}
-        break;
-      case "string":
-        return Input(_type, input);
-        break;
-      default:
-        core.warning(`Unsupported type: ${type}`);
+
+  if (input != null) {
+    for (const type of types) {
+      const _type = type.toLowerCase();
+
+      switch (_type) {
+        case "integer":
+          const intNumber = parseInt(input);
+          if (!isNaN(intNumber)) return Input(_type, intNumber);
+          break;
+        case "float":
+          const floatNumber = parseFloat(input);
+          if (!isNaN(floatNumber)) return Input(_type, floatNumber);
+          break;
+        case "boolean":
+          const lowerInput = input.toLowerCase();
+          if (lowerInput === "true") return Input(_type, true);
+          if (lowerInput === "false") return Input(_type, false);
+          break;
+        case "date":
+          const date = new Date(input);
+          if (!isNaN(date.getTime())) return Input(_type, date);
+          break;
+        case "json":
+          try {
+            return Input(_type, JSON.parse(input));
+          } catch {}
+          break;
+        case "string":
+          return Input(_type, input);
+          break;
+        default:
+          core.warning(`Unsupported type: ${type}`);
+      }
+
     }
   }
+
   return null;
 }
 
